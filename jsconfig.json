@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "commonjs",
+        "checkJs": false,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "paths": {
+            "./middleware/verifyToken": [
+                "./middleware/verifyToken.js"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "api",
+        "dist",
+        "build"
+    ],
+    "include": [
+        "server.js",
+        "config/**/*.js",
+        "middleware/**/*.js",
+        "app.js"
+    ]
+}

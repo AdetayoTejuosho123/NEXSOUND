@@ -1,0 +1,19 @@
+/* ========================================
+   NEXTSOUND — RECOVERY STYLES
+   ======================================== */
+
+:root {
+    --bg-black: #000000;
+    --bg-base: #121212;
+    --bg-highlight: #1a1a1a;
+    --bg-elevated: #242424;
+    --bg-surface: #2a2a2a;
+    --accent-green: #1ed760;
+    --accent-green-hover: #1fdf64;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+}
+
+/* This file is currently acting as a backup. 
+   Styles have been moved to index.html internal <style> 
+   to ensure 100% layout loading reliability. */

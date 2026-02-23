@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextsound - Web Player: Music for everyone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-black: #000000;
+            --bg-base: #121212;
+            --bg-highlight: #1a1a1a;
+            --bg-elevated: #242424;
+            --bg-surface: #2a2a2a;
+            --accent-green: #1ed760;
+            --accent-green-hover: #1fdf64;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-full: 9999px;
+            --header-height: 64px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #root {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* HEADER */
+        a {
+            text-decoration: none !important;
+            color: inherit;
+        }
+
+        a {
+            text-decoration: none !important;
+            color: inherit;
+        }
+
+        .global-header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            background-color: var(--bg-black);
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .home-icon-btn {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-highlight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            color: white;
+        }
+
+        .home-icon-btn:hover {
+            transform: scale(1.05);
+            background: var(--bg-elevated);
+        }
+
+        .search-pill {
+            width: 100%;
+            max-width: 480px;
+            height: 48px;
+            background: var(--bg-highlight);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            cursor: text;
+        }
+
+        .search-pill:hover {
+            background: var(--bg-elevated);
+            border-color: #333;
+        }
+
+        .search-pill:focus-within {
+            background: var(--bg-elevated);
+            border-color: #555;
+        }
+
+        .search-pill input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #fff;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            min-width: 400px;
+            justify-content: flex-end;
+        }
+
+        .nav-link-text {
+            color: var(--text-secondary);
+            font-weight: 700;
+            font-size: 0.938rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-link-text:hover {
+            color: #fff;
+        }
+
+        .auth-btns {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .signup-btn {
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .signup-btn:hover {
+            color: #fff;
+            transform: scale(1.04);
+        }
+
+        .login-btn {
+            background: #fff;
+            color: #000;
+            padding: 12px 32px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-size: 1rem;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.04);
+        }
+
+        /* HEADER STYLES */
+        .logo-box {
+            padding: 8px;
+            margin-right: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .home-icon-btn {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-highlight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+        }
+
+        .home-icon-btn:hover {
+            transform: scale(1.05);
+            background: var(--bg-elevated);
+        }
+
+        .search-pill {
+            width: 100%;
+            max-width: 480px;
+            height: 48px;
+            background: var(--bg-highlight);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .search-pill:hover {
+            background: var(--bg-elevated);
+            border-color: #333;
+        }
+
+        .search-pill:focus-within {
+            background: var(--bg-elevated);
+            border-color: #555;
+        }
+
+        .search-pill input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 4px;
+        }
+
+        .browse-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .browse-icon:hover {
+            color: #fff;
+        }
+
+        .utility-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-right: 24px;
+        }
+
+        .util-link {
+            font-size: 0.938rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .util-link:hover {
+            color: #fff;
+            transform: scale(1.04);
+        }
+
+        .install-pill {
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        /* SIDEBAR REFINEMENTS */
+        .lib-header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lib-action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .lib-action-btn:hover {
+            color: #fff;
+            background: var(--bg-highlight);
+        }
+
+        .search-sort-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            color: var(--text-secondary);
+        }
+
+        .sort-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .filter-chip {
+            background: var(--bg-elevated);
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 0.813rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .filter-chip:hover {
+            background: var(--bg-surface);
+        }
+
+        .sidebar-footer {
+            padding: 32px 24px;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .footer-links a {
+            font-size: 0.688rem;
+            color: var(--text-secondary);
+        }
+
+        .lang-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #727272;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.813rem;
+            font-weight: 700;
+        }
+
+        .lang-button:hover {
+            transform: scale(1.04);
+            border-color: #fff;
+        }
+
+        /* APP LAYOUT & VIEWS */
+        .app-shell {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .app-layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            padding: 8px;
+            gap: 8px;
+        }
+
+        .sidebar {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-card {
+            background: var(--bg-base);
+            border-radius: var(--radius-md);
+            padding: 16px;
+        }
+
+        .library-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+
+        .lib-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+        }
+
+        .lib-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .lib-title:hover {
+            color: #fff;
+        }
+
+        .lib-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 8px 8px;
+        }
+
+        .empty-card {
+            background: var(--bg-highlight);
+            padding: 24px 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+        }
+
+        .empty-card h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .empty-card p {
+            font-size: 0.875rem;
+            margin-bottom: 20px;
+        }
+
+        .pill-btn-sm {
+            background: #fff;
+            color: #000;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .main-view {
+            flex: 1;
+            background: linear-gradient(180deg, #222 0%, #121212 100%);
+            border-radius: var(--radius-md);
+            overflow-y: auto;
+            position: relative;
+            scroll-behavior: smooth;
+            /* Highly effective smooth sliding */
+        }
+
+        /* Custom Scrollbar Styling */
+        #scroll-area::-webkit-scrollbar,
+        .sidebar::-webkit-scrollbar,
+        .lib-scroll::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        #scroll-area::-webkit-scrollbar-track,
+        .sidebar::-webkit-scrollbar-track,
+        .lib-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #scroll-area::-webkit-scrollbar-thumb,
+        .sidebar::-webkit-scrollbar-thumb,
+        .lib-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        #scroll-area::-webkit-scrollbar-thumb:hover,
+        .sidebar::-webkit-scrollbar-thumb:hover,
+        .lib-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .breadcrumb-container {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 100;
+            pointer-events: none;
+            transition: background 0.3s ease;
+            /* For smooth opacity shift */
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+        }
+
+        .breadcrumb-container .arrow-btn {
+            pointer-events: auto;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .breadcrumb-container .arrow-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .content-padding {
+            padding: 24px 32px 100px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-h {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 16px;
+        }
+
+        .section-t {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .card-img-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .card-img {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            background: #333;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .play-btn {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .play-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover .play-btn:hover {
+            transform: scale(1.05);
+            background: var(--accent-green-hover);
+        }
+
+        .card-t {
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .card-d {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+        }
+
+        .artist-c .card-img {
+            border-radius: 50%;
+        }
+
+        /* QUICK PICK (GREETING) SECTION */
+        .greeting {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 8px 0 20px;
+            letter-spacing: -1px;
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px 24px;
+            margin-bottom: 32px;
+        }
+
+        .quick-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            height: 64px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: background 0.3s;
+            position: relative;
+        }
+
+        .quick-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .quick-img {
+            width: 64px;
+            height: 64px;
+            background: #333;
+            flex-shrink: 0;
+        }
+
+        .quick-t {
+            padding: 0 16px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .quick-play {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            margin-right: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .quick-card:hover .quick-play {
+            opacity: 1;
+        }
+
+        .show-all {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .show-all:hover {
+            text-decoration: underline;
+        }
+
+        /* PROFILE PAGE STYLES */
+        .profile-page {
+            padding-bottom: 100px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: flex-end;
+            gap: 24px;
+            padding: 32px;
+            background: linear-gradient(180deg, #2a2a2a 0%, transparent 100%);
+            min-height: 280px;
+        }
+
+        .profile-avatar-large {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #509bf5 0%, #2a2a2a 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .profile-name {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 16px;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        .profile-stats {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .stat-divider {
+            margin: 0 8px;
+        }
+
+        .profile-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 32px 32px;
+        }
+
+        .profile-play-btn {
+            width: 56px;
+            height: 56px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-play-btn:hover {
+            transform: scale(1.05);
+            background: var(--accent-green-hover);
+        }
+
+        .profile-more-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .profile-more-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-section {
+            padding: 0 32px;
+            margin-bottom: 40px;
+        }
+
+        .empty-playlist-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 32px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+            max-width: 200px;
+        }
+
+        .empty-playlist-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .empty-playlist-card .empty-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #333 0%, #222 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--accent-green);
+        }
+
+        .empty-playlist-card h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .empty-playlist-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .settings-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .settings-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+
+        .settings-content h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .settings-content p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .signout-section {
+            padding: 0 32px;
+        }
+
+        .signout-btn {
+            background: transparent;
+            border: 1px solid var(--text-secondary);
+            color: var(--text-secondary);
+            padding: 12px 32px;
+            border-radius: 500px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .signout-btn:hover {
+            border-color: #fff;
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        /* PROMO FOOTER */
+        .promo-banner {
+            position: fixed;
+            bottom: 8px;
+            left: 8px;
+            right: 8px;
+            height: 66px;
+            background: linear-gradient(90deg, #af2896 0%, #509bf5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 9999;
+            transform: translateY(150%);
+            /* Start off-screen */
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
+        }
+
+        .promo-banner.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .promo-dismissed {
+            transform: translateY(150%) !important;
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+
+        .p-text {
+            color: #fff;
+        }
+
+        .p-t {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+        }
+
+        .p-d {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .p-btn {
+            background: #fff;
+            color: #000;
+            padding: 12px 32px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .promo-close {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.2s;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .promo-close:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* AUTH VIEWS (FULL-PAGE OVERLAY) */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(160deg, #121212 0%, #000 60%);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 32px 16px 80px;
+            overflow-y: auto;
+            animation: authFadeIn 0.35s ease;
+        }
+
+        @keyframes authFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 480px;
+            background: #121212;
+            border-radius: 16px;
+            padding: 48px 48px 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+            box-sizing: border-box;
+        }
+
+        .auth-logo {
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .auth-logo span {
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .auth-title {
+            font-size: 1.875rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 32px;
+            line-height: 1.2;
+        }
+
+        /* Social buttons */
+        .social-btn {
+            width: 100%;
+            height: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .social-btn:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            transform: scale(1.01);
+        }
+
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Divider */
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Form */
+        .auth-form {
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-g {
+            margin-bottom: 18px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-g label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.813rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            letter-spacing: 0.01em;
+        }
+
+        .form-g .input-wrap {
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-g input {
+            width: 100%;
+            height: 50px;
+            background: #1a1a1a;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 0 44px 0 16px;
+            color: #fff;
+            outline: none;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .form-g input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-g input:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-g input:focus {
+            border-color: #fff;
+            background: #222;
+        }
+
+        /* Password toggle */
+        .toggle-pw {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .toggle-pw:hover {
+            color: #fff;
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .auth-submit {
+            width: 100%;
+            height: 50px;
+            background: var(--accent-green);
+            color: #000;
+            border: none;
+            border-radius: var(--radius-full);
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin-top: 28px;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(30, 215, 96, 0.25);
+        }
+
+        .auth-submit:hover {
+            transform: scale(1.02);
+            background: var(--accent-green-hover);
+            box-shadow: 0 6px 28px rgba(30, 215, 96, 0.4);
+        }
+
+        .auth-footer {
+            margin-top: 32px;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 28px;
+            font-size: 0.9rem;
+        }
+
+        .link-green {
+            color: #fff;
+            text-decoration: underline;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .link-green:hover {
+            color: var(--accent-green);
+            text-decoration: none;
+        }
+
+        .category-card {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .category-card h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .category-img {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            position: absolute;
+            bottom: -5px;
+            right: -15px;
+            transform: rotate(25deg);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* PLAYER BAR */
+        .player-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            background: #000;
+            border-top: 1px solid #282828;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 3000;
+        }
+
+        .p-info {
+            width: 30%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .p-thumb {
+            width: 56px;
+            height: 56px;
+            border-radius: 4px;
+            background: #333;
+        }
+
+        .p-meta .t {
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .p-meta .a {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .p-controls {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ctrl-btns {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            color: var(--text-secondary);
+        }
+
+        .play-pause-btn {
+            width: 32px;
+            height: 32px;
+            background: #fff;
+            border-radius: 50%;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .p-slider-box {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .p-slider {
+            flex: 1;
+            height: 4px;
+            background: #4f4f4f;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .p-progress {
+            width: 30%;
+            height: 100%;
+            background: #fff;
+            border-radius: 2px;
+        }
+
+        .p-actions {
+            width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* DYNAMIC CONTENT HEADERS (ARTIST & ALBUM) */
+        .content-header {
+            height: 300px;
+            padding: 0 32px 24px;
+            display: flex;
+            align-items: flex-end;
+            gap: 24px;
+            background: linear-gradient(180deg, rgba(80, 155, 245, 0.6) 0%, rgba(18, 18, 18, 1) 100%);
+            position: relative;
+        }
+
+        .header-img {
+            width: 232px;
+            height: 232px;
+            background: #333;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+        }
+
+        .artist-header .header-img {
+            border-radius: 50%;
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .header-type {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .header-name {
+            font-size: clamp(2rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 12px;
+            letter-spacing: -3px;
+            line-height: 1;
+        }
+
+        .verified-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .stats-info {
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+
+        /* TRACK LIST TABLE */
+        .track-list-section {
+            padding: 24px 32px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .action-bar {
+            padding: 24px 0;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .play-big {
+            width: 56px;
+            height: 56px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .play-big:hover {
+            transform: scale(1.05);
+            background: var(--accent-green-hover);
+        }
+
+        .follow-btn {
+            border: 1px solid var(--text-secondary);
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .follow-btn:hover {
+            border-color: #fff;
+            transform: scale(1.04);
+        }
+
+        .track-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .track-table th {
+            text-align: left;
+            color: var(--text-secondary);
+            font-size: 0.813rem;
+            font-weight: 400;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+        }
+
+        .track-row {
+            border-radius: 4px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .track-row:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .track-row td {
+            padding: 12px 16px;
+            font-size: 0.875rem;
+        }
+
+        .track-num {
+            width: 40px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .track-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .track-thumb {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 4px;
+        }
+
+        .track-title {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .track-artist {
+            color: var(--text-secondary);
+            font-size: 0.813rem;
+            margin-top: 2px;
+        }
+
+        .track-album {
+            color: var(--text-secondary);
+        }
+
+        .track-time {
+            color: var(--text-secondary);
+            text-align: right;
+            width: 60px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <!-- GLOBAL UI -->
+        <header class="global-header">
+            <div class="header-left">
+                <div class="logo-box router-link" data-path="home" title="Nextsound">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="white">
+                        <path
+                            d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.187 14.457c-.19.31-.592.404-.903.213-2.394-1.463-5.41-1.795-8.956-.987-.353.08-.703-.142-.784-.494-.082-.353.14-.704.493-.785 3.886-.888 7.218-.51 9.937 1.15.31.19.405.593.213.903zm1.114-2.724c-.238.387-.74.51-1.127.272-2.74-1.685-6.912-2.174-10.15-1.19-.44.134-.902-.116-1.036-.556-.134-.44.116-.902.556-1.036 3.71-1.127 8.312-.578 11.485 1.37.387.237.51.74.272 1.127zm.106-2.828c-3.273-1.944-8.66-2.124-11.777-1.178-.503.153-1.03-.13-1.185-.633-.153-.502.13-1.03.633-1.185 3.585-1.088 9.535-.873 13.313 1.37.452.268.604.85.337 1.302-.268.452-.85.603-1.302.333-.02-.01-.03-.02-.02-.01z" />
+                    </svg>
+                </div>
+                <div class="home-icon-btn router-link" data-path="home" title="Home">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path
+                            d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33zm-2-1.732a3 3 0 0 1 3 0l7.5 4.33a2 2 0 0 1 1 1.732V21a1 1 0 0 1-1 1h-6.5a1 1 0 0 1-1-1v-6h-3v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.577a2 2 0 0 1 1-1.732l7.5-4.33z" />
+                    </svg>
+                </div>
+                <div class="search-pill">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path
+                            d="M10.533 1.279c-5.18 0-9.407 4.14-9.407 9.279s4.226 9.279 9.407 9.279c2.234 0 4.29-.77 5.907-2.058l4.353 4.353a1 1 0 1 0 1.414-1.414l-4.344-4.344a9.157 9.157 0 0 0 2.077-5.816c0-5.14-4.226-9.28-9.407-9.28zm-7.407 9.28c0-4.006 3.302-7.28 7.407-7.28s7.407 3.274 7.407 7.28-3.302 7.279-7.407 7.279-7.407-3.273-7.407-7.28z" />
+                    </svg>
+                    <input type="text" placeholder="What do you want to listen to?">
+                    <div class="search-divider"></div>
+                    <div class="browse-icon" title="Browse">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <path
+                                d="M4 2.5a.5.5 0 0 0-.5.5v18a.5.5 0 0 0 .5.5h16a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H4zm1.5 2h13v15h-13V4.5zM2 3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="utility-links">
+                    <a href="#" class="util-link">Premium</a>
+                    <a href="#" class="util-link">Support</a>
+                    <a href="#" class="util-link">Download</a>
+                    <div class="search-divider" style="height:16px"></div>
+                    <a href="#" class="util-link install-pill">
+                        <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                            <path
+                                d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8zm7.75-4.25v5.25H11l-3 3.5-3-3.5h2.25V3.75h1.5z" />
+                        </svg>
+                        Install App
+                    </a>
+                </div>
+                <div class="auth-btns" id="auth-group">
+                    <div class="signup-btn router-link" data-path="signup">Sign up</div>
+                    <div class="login-btn router-link" data-path="login">Log in</div>
+                </div>
+                <div class="user-profile hidden" id="user-group">
+                    <div class="nav-arrows" style="margin-right:16px">
+                        <div class="arrow-btn" id="go-back"><svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                                <path
+                                    d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z" />
+                            </svg></div>
+                        <div class="arrow-btn" id="go-forward"><svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                                <path
+                                    d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8l-6.47 6.47a.75.75 0 1 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z" />
+                            </svg></div>
+                    </div>
+                    <div class="router-link" data-path="profile"
+                        style="width:32px;height:32px;background:#509BF5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer"
+                        id="avatar-circle">NS</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="app-layout" id="main-content">
+            <aside class="sidebar">
+                <div class="sidebar-card library-card">
+                    <div class="lib-header">
+                        <div class="lib-title">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path
+                                    d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM7 3a1 1 0 0 0-1 1v17a1 1 0 1 0 2 0V4a1 1 0 0 0-1-1z" />
+                            </svg>
+                            <span>Your Library</span>
+                        </div>
+                        <div class="lib-header-actions">
+                            <div class="lib-action-btn" title="Create playlist or folder">
+                                <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                                    <path
+                                        d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z" />
+                                </svg>
+                            </div>
+                            <div class="lib-action-btn" title="Expand library">
+                                <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                                    <path
+                                        d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8l-6.47 6.47a.75.75 0 1 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:8px; padding:0 16px 12px; overflow-x: auto;">
+                        <div class="filter-chip">Playlists</div>
+                        <div class="filter-chip">Artists</div>
+                        <div class="filter-chip">Albums</div>
+                    </div>
+                    <div class="search-sort-bar">
+                        <div class="lib-action-btn" style="width:24px; height:24px">
+                            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                                <path
+                                    d="M7 1.75a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5zM.25 7a6.75 6.75 0 1 1 12.096 4.12l3.184 3.185a.75.75 0 1 1-1.06 1.06L11.29 12.18A6.75 6.75 0 0 1 .25 7z" />
+                            </svg>
+                        </div>
+                        <div class="sort-label">
+                            <span>Recents</span>
+                            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                                <path d="M15 14.5H1V13h14v1.5zm0-4.5H1V8.5h14V10zm0-4.5H1V4h14v1.5z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="lib-scroll">
+                        <div class="empty-card">
+                            <h3>Create your first playlist</h3>
+                            <p>It's easy, we'll help you</p>
+                            <div class="pill-btn-sm">Create playlist</div>
+                        </div>
+                        <div class="empty-card">
+                            <h3>Let's find some podcasts to follow</h3>
+                            <p>We'll keep you updated on new episodes</p>
+                            <div class="pill-btn-sm">Browse podcasts</div>
+                        </div>
+                        <div id="lib-injected"></div>
+                    </div>
+                </div>
+                <div class="sidebar-footer">
+                    <div class="footer-links">
+                        <a href="#">Legal</a>
+                        <a href="#">Safety & Privacy Center</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Cookies</a>
+                        <a href="#">About Ads</a>
+                        <a href="#">Accessibility</a>
+                    </div>
+                    <div class="lang-button">
+                        <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                            <path
+                                d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm11.75 4.5l-.75-.75 2.25-2.25H9.5v-1h3.75l-2.25-2.25.75-.75 3.5 3.5-3.5 3.5zM4.25 11.5l.75-.75L2.75 8.5H6.5v1H2.75l2.25 2.25-.75.75L.75 9l3.5-3.5z" />
+                        </svg>
+                        <span>English</span>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="main-view" id="scroll-area">
+                <div class="breadcrumb-container">
+                    <div class="arrow-btn" id="go-back-main" title="Go back">
+                        <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                            <path
+                                d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z" />
+                        </svg>
+                    </div>
+                    <div class="arrow-btn" id="go-forward-main" title="Go forward">
+                        <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                            <path
+                                d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8l-6.47 6.47a.75.75 0 1 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <div id="view-mount"></div>
+            </main>
+        </div>
+
+        <!-- FOOTER PROMO -->
+        <footer class="promo-banner" id="logged-out-promo">
+            <div class="p-text">
+                <div class="p-t">PREVIEW OF NEXTSOUND</div>
+                <div class="p-d">Sign up to get unlimited songs and podcasts with occasional ads. No credit card needed.
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:16px;">
+                <div class="p-btn router-link" data-path="signup">Sign up free</div>
+                <div class="promo-close" id="close-promo" title="Close">
+                    <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                        <path
+                            d="M14.707 1.293a1 1 0 0 0-1.414 0L8 6.586 2.707 1.293a1 1 0 0 0-1.414 1.414L6.586 8l-5.293 5.293a1 1 0 1 0 1.414 1.414L8 9.414l5.293 5.293a1 1 0 0 0 1.414-1.414L9.414 8l5.293-5.293a1 1 0 0 0 0-1.414z" />
+                    </svg>
+                </div>
+            </div>
+        </footer>
+
+        <!-- PLAYER BAR (LOGGED IN) -->
+        <footer class="player-bar hidden" id="main-player">
+            <div class="p-info">
+                <div class="p-thumb"></div>
+                <div class="p-meta">
+                    <div class="t">Select a song</div>
+                    <div class="a">Artist name</div>
+                </div>
+            </div>
+            <div class="p-controls">
+                <div class="ctrl-btns">
+                    <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                        <path
+                            d="M13.151.922a.75.75 0 0 1 .528.96l-1.028 3.355a.75.75 0 0 1-1.44-.441L12.039 2.162a6.5 6.5 0 1 0 3.08 3.117.75.75 0 1 1 1.398-.54 8 8 0 1 1-3.793-3.817L13.151.922z" />
+                    </svg>
+                    <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                        <path
+                            d="M3.3 1a.7.7 0 0 1 .7.7v5.15l5.43-3.105a.7.7 0 0 1 1.07.604v9.2a.7.7 0 0 1-1.07.604L4 10.15V15.3a.7.7 0 0 1-1.4 0V1.7A.7.7 0 0 1 3.3 1z" />
+                    </svg>
+                    <div class="play-pause-btn"><svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                            <path
+                                d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894a.7.7 0 0 1-1.05-.607V1.713z" />
+                        </svg></div>
+                    <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                        <path
+                            d="M12.7 1a.7.7 0 0 0-.7.7v5.15L6.57 3.745a.7.7 0 0 0-1.07.604v9.2a.7.7 0 0 0 1.07.604L12 10.15V15.3a.7.7 0 0 0 1.4 0V1.7a.7.7 0 0 0-.7-.7z" />
+                    </svg>
+                    <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                        <path
+                            d="M0 4.75A.75.75 0 0 1 .75 4h14.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 4.75zM0 11.25a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1-.75-.75z" />
+                    </svg>
+                </div>
+                <div class="p-slider-box">
+                    <span>0:00</span>
+                    <div class="p-slider">
+                        <div class="p-progress"></div>
+                    </div>
+                    <span>3:45</span>
+                </div>
+            </div>
+            <div class="p-actions">
+                <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                    <path d="M11.196 8 6 5v6l5.196-3z" />
+                    <path
+                        d="M15.002 1.75A1.75 1.75 0 0 0 13.252 0h-10.5a1.75 1.75 0 0 0-1.75 1.75v12.5c0 .966.783 1.75 1.75 1.75h10.5a1.75 1.75 0 0 0 1.75-1.75V1.75zm-1.75-.25a.25.25 0 0 1 .25.25v12.5a.25.25 0 0 1-.25.25h-10.5a.25.25 0 0 1-.25-.25V1.75a.25.25 0 0 1 .25-.25h10.5z" />
+                </svg>
+                <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                    <path
+                        d="M10 2v3h1v1h-1v3h1v1h-1v3h1v1h-2v-1h-1v-1h1v-3h-1v-1h1v-3h-1l-1-1h3zm-4 0v1h1l-1 1h-1v3h1v1h-1v3h1v1h-1v3h1v1h-2v-1h-1l-1-1h3v-3h-1v-1h1v-3h-1l-1-1h3z" />
+                </svg>
+                <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                    <path d="M13 10V2H5v11h3v2l3-2h2v-1h-3zM6 3h6v6H6V3z" />
+                </svg>
+                <svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                    <path
+                        d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a.75.75 0 0 1 0-1.3l6.925-4a.75.75 0 0 1 .75 0z" />
+                </svg>
+                <div class="p-slider" style="width:100px">
+                    <div class="p-progress" style="width:70%"></div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- AUTH MODALS CONTAINER -->
+        <div id="auth-mount" class="auth-overlay hidden"></div>
+    </div>
+
+    <!-- TEMPLATES -->
+    <template id="view-home">
+        <div class="content-padding">
+            <h1 class="greeting" id="greeting-text">Good afternoon</h1>
+
+            <div class="quick-grid" id="grid-quick"></div>
+
+            <div class="section">
+                <div class="section-h">
+                    <h2 class="section-t">Trending now</h2>
+                    <div class="show-all">Show all</div>
+                </div>
+                <div class="card-grid" id="grid-trending"></div>
+            </div>
+
+            <div class="section">
+                <div class="section-h">
+                    <h2 class="section-t">Popular artists</h2>
+                    <div class="show-all">Show all</div>
+                </div>
+                <div class="card-grid" id="grid-artists"></div>
+            </div>
+
+            <div class="section">
+                <div class="section-h">
+                    <h2 class="section-t">Popular albums</h2>
+                    <div class="show-all">Show all</div>
+                </div>
+                <div class="card-grid" id="grid-albums"></div>
+            </div>
+
+            <div class="section">
+                <div class="section-h">
+                    <h2 class="section-t">Recommended for today</h2>
+                    <div class="show-all">Show all</div>
+                </div>
+                <div class="card-grid" id="grid-recommended"></div>
+            </div>
+
+            <div class="section">
+                <div class="section-h">
+                    <h2 class="section-t">More of what you like</h2>
+                    <div class="show-all">Show all</div>
+                </div>
+                <div class="card-grid" id="grid-more"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="view-artist">
+        <div id="artist-profile-content">
+            <div class="artist-header content-header" id="artist-profile-header">
+                <div class="header-img" id="artist-profile-img"></div>
+                <div class="header-info">
+                    <div class="verified-badge">
+                        <svg viewBox="0 0 24 24" width="24" fill="#3d91f4">
+                            <path
+                                d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM9.8 17.3l-4.2-4.1 1.4-1.4 2.8 2.7 7.4-7.4 1.4 1.4-8.8 8.8z" />
+                        </svg>
+                        &nbsp;Verified Artist
+                    </div>
+                    <h1 class="header-name" id="artist-profile-name">Artist Name</h1>
+                    <div class="stats-info" id="artist-profile-stats">28,456,123 monthly listeners</div>
+                </div>
+            </div>
+            <div class="track-list-section">
+                <div class="action-bar">
+                    <div class="play-big"><svg viewBox="0 0 24 24" width="28" fill="black">
+                            <path d="M7 6v12l10-6z" />
+                        </svg></div>
+                    <div class="follow-btn">Follow</div>
+                    <svg viewBox="0 0 24 24" width="24" fill="var(--text-secondary)">
+                        <path
+                            d="M4.5 10.5c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5zm15 0c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5zm-7.5 0c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5z" />
+                    </svg>
+                </div>
+                <h2 class="section-t" style="margin-bottom:16px;">Popular</h2>
+                <table class="track-table">
+                    <tbody id="artist-popular-table"></tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+
+    <template id="view-album">
+        <div id="album-profile-content">
+            <div class="content-header" id="album-profile-header">
+                <div class="header-img" id="album-profile-img"></div>
+                <div class="header-info">
+                    <div class="header-type">Album</div>
+                    <h1 class="header-name" id="album-profile-name">Album Name</h1>
+                    <div class="verified-badge">
+                        <div style="width:24px;height:24px;background:#333;border-radius:50%;" id="album-artist-mini">
+                        </div>
+                        <span id="album-artist-name">Artist Name</span>
+                        <span style="color:var(--text-secondary);">&nbsp;•&nbsp;</span>
+                        <span id="album-year">2023</span>
+                        <span style="color:var(--text-secondary);">&nbsp;•&nbsp;</span>
+                        <span id="album-tracks-count">12 songs</span>
+                    </div>
+                </div>
+            </div>
+            <div class="track-list-section">
+                <div class="action-bar">
+                    <div class="play-big"><svg viewBox="0 0 24 24" width="28" fill="black">
+                            <path d="M7 6v12l10-6z" />
+                        </svg></div>
+                    <svg viewBox="0 0 24 24" width="32" fill="var(--accent-green)">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" width="24" fill="var(--text-secondary)">
+                        <path
+                            d="M4.5 10.5c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5zm15 0c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5zm-7.5 0c-.825 0-1.5.675-1.5 1.5s.675 1.5 1.5 1.5 1.5-.675 1.5-1.5-.675-1.5-1.5-1.5z" />
+                    </svg>
+                </div>
+                <table class="track-table">
+                    <thead>
+                        <tr>
+                            <th class="track-num">#</th>
+                            <th>Title</th>
+                            <th class="track-time"><svg viewBox="0 0 16 16" width="16" fill="currentColor">
+                                    <path
+                                        d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8.5 4.5H7V5h1.5v7.5z" />
+                                </svg></th>
+                        </tr>
+                    </thead>
+                    <tbody id="album-tracks-table"></tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+
+    <template id="view-search">
+        <div class="content-padding">
+            <!-- FEATURED: Trending Songs Section -->
+            <div class="section" style="margin-bottom: 40px;">
+                <div class="section-h">
+                    <h2 class="section-t">Trending songs</h2>
+                    <div class="show-all">Show all</div>
+                </div>
+                <div class="card-grid" id="grid-search-trending"></div>
+            </div>
+
+            <!-- BROWSE ALL: Standard Categories Section -->
+            <div class="section">
+                <div class="section-h">
+                    <h2 class="section-t">Browse all</h2>
+                </div>
+                <div class="card-grid" id="grid-categories"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="view-signup">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="white">
+                    <path
+                        d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.187 14.457c-.19.31-.592.404-.903.213-2.394-1.463-5.41-1.795-8.956-.987-.353.08-.703-.142-.784-.494-.082-.353.14-.704.493-.785 3.886-.888 7.218-.51 9.937 1.15.31.19.405.593.213.903zm1.114-2.724c-.238.387-.74.51-1.127.272-2.74-1.685-6.912-2.174-10.15-1.19-.44.134-.902-.116-1.036-.556-.134-.44.116-.902.556-1.036 3.71-1.127 8.312-.578 11.485 1.37.387.237.51.74.272 1.127zm.106-2.828c-3.273-1.944-8.66-2.124-11.777-1.178-.503.153-1.03-.13-1.185-.633-.153-.502.13-1.03.633-1.185 3.585-1.088 9.535-.873 13.313 1.37.452.268.604.85.337 1.302-.268.452-.85.603-1.302.333-.02-.01-.03-.02-.02-.01z" />
+                </svg>
+                <span>Nextsound</span>
+            </div>
+            <h1 class="auth-title">Sign up to start<br>listening</h1>
+
+            <!-- Social signup buttons -->
+            <div class="social-btn" id="btn-google-signup">
+                <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                        fill="#4285F4" />
+                    <path
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                        fill="#34A853" />
+                    <path
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                        fill="#FBBC05" />
+                    <path
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                        fill="#EA4335" />
+                </svg>
+                Continue with Google
+            </div>
+            <div class="social-btn" id="btn-facebook-signup">
+                <svg class="social-icon" viewBox="0 0 24 24" fill="#1877F2">
+                    <path
+                        d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+                Continue with Facebook
+            </div>
+            <div class="social-btn" id="btn-apple-signup">
+                <svg class="social-icon" viewBox="0 0 24 24" fill="#fff">
+                    <path
+                        d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
+                </svg>
+                Continue with Apple
+            </div>
+
+            <div class="auth-divider">or</div>
+
+            <form class="auth-form" id="form-signup">
+                <div class="form-g">
+                    <label for="signup-email">Email address</label>
+                    <div class="input-wrap">
+                        <input type="email" id="signup-email" name="email" placeholder="name@example.com" required
+                            autocomplete="email">
+                    </div>
+                </div>
+                <div class="form-g">
+                    <label for="signup-password">Create a password</label>
+                    <div class="input-wrap">
+                        <input type="password" id="signup-password" name="password"
+                            placeholder="Create a strong password" required autocomplete="new-password">
+                        <button type="button" class="toggle-pw"
+                            onclick="this.previousElementSibling.type=this.previousElementSibling.type==='password'?'text':'password'"
+                            tabindex="-1">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path
+                                    d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="form-hint">Use at least 8 characters.</div>
+                </div>
+                <div class="form-g">
+                    <label for="signup-name">What should we call you?</label>
+                    <div class="input-wrap">
+                        <input type="text" id="signup-name" name="name" placeholder="Enter a profile name" required
+                            autocomplete="nickname">
+                    </div>
+                    <div class="form-hint">This appears on your profile.</div>
+                </div>
+                <button type="submit" class="auth-submit">Create account</button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account?
+                <span class="link-green router-link" data-path="login">Log in here</span>.
+            </div>
+        </div>
+    </template>
+
+    <template id="view-login">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="white">
+                    <path
+                        d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.187 14.457c-.19.31-.592.404-.903.213-2.394-1.463-5.41-1.795-8.956-.987-.353.08-.703-.142-.784-.494-.082-.353.14-.704.493-.785 3.886-.888 7.218-.51 9.937 1.15.31.19.405.593.213.903zm1.114-2.724c-.238.387-.74.51-1.127.272-2.74-1.685-6.912-2.174-10.15-1.19-.44.134-.902-.116-1.036-.556-.134-.44.116-.902.556-1.036 3.71-1.127 8.312-.578 11.485 1.37.387.237.51.74.272 1.127zm.106-2.828c-3.273-1.944-8.66-2.124-11.777-1.178-.503.153-1.03-.13-1.185-.633-.153-.502.13-1.03.633-1.185 3.585-1.088 9.535-.873 13.313 1.37.452.268.604.85.337 1.302-.268.452-.85.603-1.302.333-.02-.01-.03-.02-.02-.01z" />
+                </svg>
+                <span>Nextsound</span>
+            </div>
+            <h1 class="auth-title">Log in to Nextsound</h1>
+
+            <div class="social-btn" id="btn-google-login">
+                <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                        fill="#4285F4" />
+                    <path
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                        fill="#34A853" />
+                    <path
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                        fill="#FBBC05" />
+                    <path
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                        fill="#EA4335" />
+                </svg>
+                Continue with Google
+            </div>
+            <div class="social-btn" id="btn-apple-login">
+                <svg class="social-icon" viewBox="0 0 24 24" fill="#fff">
+                    <path
+                        d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
+                </svg>
+                Continue with Apple
+            </div>
+            <div class="social-btn" id="btn-facebook-login">
+                <svg class="social-icon" viewBox="0 0 24 24" fill="#1877F2">
+                    <path
+                        d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+                Continue with Facebook
+            </div>
+
+            <div class="auth-divider">or</div>
+
+            <form class="auth-form" id="form-login">
+                <div class="form-g">
+                    <label for="login-email">Email or username</label>
+                    <div class="input-wrap">
+                        <input type="text" id="login-email" name="email" placeholder="Email or username" required
+                            autocomplete="username">
+                    </div>
+                </div>
+                <div class="form-g">
+                    <label for="login-password">Password</label>
+                    <div class="input-wrap">
+                        <input type="password" id="login-password" name="password" placeholder="Password" required
+                            autocomplete="current-password">
+                        <button type="button" class="toggle-pw"
+                            onclick="this.previousElementSibling.type=this.previousElementSibling.type==='password'?'text':'password'"
+                            tabindex="-1">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path
+                                    d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="auth-submit">Log In</button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account?
+                <span class="link-green router-link" data-path="signup">Sign up for Nextsound</span>.
+            </div>
+        </div>
+    </template>
+
+    <!-- PROFILE VIEW TEMPLATE -->
+    <template id="view-profile">
+        <div class="profile-page">
+            <div class="profile-header">
+                <div class="profile-avatar-large" id="profile-avatar">NS</div>
+                <div class="profile-info">
+                    <div class="profile-label">PROFILE</div>
+                    <h1 class="profile-name" id="profile-display-name">User Name</h1>
+                    <div class="profile-stats">
+                        <span id="profile-playlists-count">0</span> Playlists
+                        <span class="stat-divider">•</span>
+                        <span id="profile-followers-count">0</span> Followers
+                        <span class="stat-divider">•</span>
+                        <span id="profile-following-count">0</span> Following
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <div class="profile-play-btn">
+                    <svg viewBox="0 0 24 24" width="24" fill="black">
+                        <path d="M7 6v12l10-6z" />
+                    </svg>
+                </div>
+                <div class="profile-more-btn">
+                    <svg viewBox="0 0 24 24" width="24" fill="currentColor">
+                        <path
+                            d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-h">
+                    <h2 class="section-t">Public Playlists</h2>
+                    <div class="show-all">Show all</div>
+                </div>
+                <div class="card-grid" id="profile-playlists-grid">
+                    <div class="empty-playlist-card">
+                        <div class="empty-icon">
+                            <svg viewBox="0 0 24 24" width="48" fill="currentColor">
+                                <path
+                                    d="M15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM7 3a1 1 0 0 0-1 1v17a1 1 0 1 0 2 0V4a1 1 0 0 0-1-1z" />
+                            </svg>
+                        </div>
+                        <h3>Create your first playlist</h3>
+                        <p>It's easy, we'll help you</p>
+                        <div class="pill-btn-sm">Create playlist</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-h">
+                    <h2 class="section-t">Account Settings</h2>
+                </div>
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <svg viewBox="0 0 24 24" width="24" fill="currentColor">
+                                <path
+                                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                            </svg>
+                        </div>
+                        <div class="settings-content">
+                            <h3>Account Overview</h3>
+                            <p>View your account details</p>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <svg viewBox="0 0 24 24" width="24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                            </svg>
+                        </div>
+                        <div class="settings-content">
+                            <h3>Privacy Settings</h3>
+                            <p>Manage your privacy</p>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <svg viewBox="0 0 24 24" width="24" fill="currentColor">
+                                <path
+                                    d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                            </svg>
+                        </div>
+                        <div class="settings-content">
+                            <h3>Email Notifications</h3>
+                            <p>Choose what to get notified about</p>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <svg viewBox="0 0 24 24" width="24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                            </svg>
+                        </div>
+                        <div class="settings-content">
+                            <h3>Help & Support</h3>
+                            <p>Get help or report an issue</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-h">
+                    <h2 class="section-t">Sign Out</h2>
+                </div>
+                <div class="signout-section">
+                    <button class="signout-btn router-link" data-path="logout">Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
