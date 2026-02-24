@@ -171,6 +171,7 @@ const App = {
                 if (tpl) mount.appendChild(tpl.content.cloneNode(true));
                 this.renderProfile();
             } else {
+                console.log('Navigating to:', path);
                 authMount.classList.remove('hidden');
                 authMount.innerHTML = '';
                 const tpl = document.getElementById(`view-${path}`);
@@ -345,11 +346,15 @@ const App = {
     },
 
     setupAuthForms(path) {
-        const form = document.querySelector('form');
-        if (!form) return;
+        const form = document.querySelector('.auth-form');
+        if (!form) {
+            console.error('Form not found');
+            return;
+        }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            console.log('Form submitted for:', path);
             this.clearAuthError();
 
             const btn = form.querySelector('.auth-submit');
