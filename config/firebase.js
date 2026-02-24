@@ -4,6 +4,10 @@ const fs = require('fs');
 
 let serviceAccount;
 
+// Handle Vercel serverless environment
+const isVercel = process.env.VERCEL === '1';
+const basePath = isVercel ? path.join(process.cwd()) : __dirname;
+
 const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT;
 
 if (serviceAccountJson) {
@@ -17,7 +21,7 @@ if (serviceAccountJson) {
 
 // Fallback: try to read from file
 if (!serviceAccount) {
-    const serviceAccountPath = path.join(__dirname, 'serviceAccountKey.json');
+    const serviceAccountPath = path.join(basePath, 'serviceAccountKey.json');
     try {
         if (fs.existsSync(serviceAccountPath)) {
             const fileContent = fs.readFileSync(serviceAccountPath, 'utf8');
@@ -32,7 +36,7 @@ if (!serviceAccount) {
 // Last resort: try require (works in development)
 if (!serviceAccount) {
     try {
-        serviceAccount = require('./serviceAccountKey.json');
+        serviceAccount = require(path.join(basePath, 'serviceAccountKey.json'));
         console.log('[Firebase] Using service account from require');
     } catch (e) {
         console.error('[Firebase] All methods failed to load service account');

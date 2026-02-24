@@ -10,6 +10,10 @@ const admin = require('./config/firebase');
 const verifyToken = require('./middleware/verifyToken');
 const webConfig = require('./config/webConfig');
 
+// Handle Vercel serverless environment
+const isVercel = process.env.VERCEL === '1';
+const basePath = isVercel ? path.join(process.cwd()) : __dirname;
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -21,7 +25,7 @@ app.use(cors());
 app.use(express.json());
 
 // ── Serve Frontend Static Files ──────────────────────────
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(basePath)));
 
 // ── Health Check ─────────────────────────────────────────
 app.get('/api/health', (req, res) => {
@@ -120,7 +124,7 @@ app.get('/api/me', verifyToken, (req, res) => {
 
 // ── Catch-all: Serve index.html ───────────────────────────
 app.get('/{*path}', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(basePath, 'index.html'));
 });
 
 // ── Start Server ─────────────────────────────────────────

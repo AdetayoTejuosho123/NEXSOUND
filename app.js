@@ -557,5 +557,18 @@ const App = {
     }
 };
 
-// Boot
-document.addEventListener('DOMContentLoaded', () => App.init());
+// Boot - with error handling
+window.addEventListener('error', (e) => {
+    console.error('Global error:', e.message);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        App.init();
+    } catch (err) {
+        console.error('App init error:', err);
+        // Show auth buttons even if there's an error
+        const authG = document.getElementById('auth-group');
+        if (authG) authG.classList.remove('hidden');
+    }
+});

@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nextsound - Web Player: Music for everyone</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Preconnect with error handling -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
@@ -1571,7 +1572,7 @@
                         Install App
                     </a>
                 </div>
-                <div class="auth-btns" id="auth-group">
+                <div class="auth-btns" id="auth-group" style="display:flex;">
                     <div class="signup-btn router-link" data-path="signup">Sign up</div>
                     <div class="login-btn router-link" data-path="login">Log in</div>
                 </div>
@@ -2214,7 +2215,7 @@
         </div>
     </template>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=2"></script>
 </body>
 
 </html>
