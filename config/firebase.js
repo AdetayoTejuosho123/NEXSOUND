@@ -4,13 +4,12 @@ const fs = require('fs');
 
 let serviceAccount;
 
-// First try environment variable (for Vercel)
 const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT;
 
 if (serviceAccountJson) {
     try {
         serviceAccount = JSON.parse(serviceAccountJson);
-        console.log('[Firebase] Using service account from environment variable');
+        console.log('[Firebase] Using service account from FIREBASE_SERVICE_ACCOUNT env var');
     } catch (e) {
         console.error('[Firebase] Failed to parse FIREBASE_SERVICE_ACCOUNT:', e.message);
     }

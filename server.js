@@ -124,17 +124,23 @@ app.get('/{*path}', (req, res) => {
 });
 
 // ── Start Server ─────────────────────────────────────────
-app.listen(PORT, () => {
-    console.log('');
-    console.log('  ╔══════════════════════════════════════╗');
-    console.log(`  ║  Nextsound running on port ${PORT}      ║`);
-    console.log(`  ║  http://localhost:${PORT}               ║`);
-    console.log(`  ║  Project: ${webConfig.projectId}   ║`);
-    console.log('  ╚══════════════════════════════════════╝');
-    console.log('');
-    console.log('  ✅ Firebase Auth connected');
-    console.log('  ✅ Signup: POST /api/signup (email verification required)');
-    console.log('  ✅ Login:  POST /api/login  (password verified)');
-    console.log('  ✅ Me:     GET  /api/me     (token protected)');
-    console.log('');
-});
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log('');
+        console.log('  ╔══════════════════════════════════════╗');
+        console.log(`  ║  Nextsound running on port ${PORT}      ║`);
+        console.log(`  ║  http://localhost:${PORT}               ║`);
+        console.log(`  ║  Project: ${webConfig.projectId}   ║`);
+        console.log('  ╚══════════════════════════════════════╝');
+        console.log('');
+        console.log('  ✅ Firebase Auth connected');
+        console.log('  ✅ Signup: POST /api/signup (email verification required)');
+        console.log('  ✅ Login:  POST /api/login  (password verified)');
+        console.log('  ✅ Me:     GET  /api/me     (token protected)');
+        console.log('');
+    });
+}
+
+// Export for Vercel
+module.exports = app;
